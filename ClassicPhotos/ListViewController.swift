@@ -12,49 +12,49 @@ import CoreImage
 let dataSourceURL = NSURL(string:"http://www.raywenderlich.com/downloads/ClassicPhotosDictionary.plist")
 
 class ListViewController: UITableViewController {
-  
-  lazy var photos = NSDictionary(contentsOfURL:dataSourceURL!)!
-  
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.title = "Classic Photos"
-  }
-  
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
-  // #pragma mark - Table view data source
-  
-  override func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
-    return photos.count
-  }
-  
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("CellIdentifier", forIndexPath: indexPath) 
-    let rowKey = photos.allKeys[indexPath.row] as! String
     
-    var image : UIImage?
-    if let imageURL = NSURL(string:photos[rowKey] as! String),
-    imageData = NSData(contentsOfURL:imageURL){
-      //1
-      let unfilteredImage = UIImage(data:imageData)
-      //2
-      image = self.applySepiaFilter(unfilteredImage!)
+    lazy var photos = NSDictionary(contentsOfURL:dataSourceURL!)!
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Classic Photos"
     }
     
-    // Configure the cell...
-    cell.textLabel?.text = rowKey
-    if image != nil {
-      cell.imageView?.image = image!
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
-    return cell
-  }
-  
-  
+    // #pragma mark - Table view data source
+    
+    override func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+        return photos.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("CellIdentifier", forIndexPath: indexPath)
+        let rowKey = photos.allKeys[indexPath.row] as! String
+        
+        var image : UIImage?
+        if let imageURL = NSURL(string:photos[rowKey] as! String),
+            imageData = NSData(contentsOfURL:imageURL){
+                //1
+                let unfilteredImage = UIImage(data:imageData)
+                //2
+                image = self.applySepiaFilter(unfilteredImage!)
+        }
+        
+        // Configure the cell...
+        cell.textLabel?.text = rowKey
+        if image != nil {
+            cell.imageView?.image = image!
+        }
+        
+        return cell
+    }
+    
+    
     func applySepiaFilter(image:UIImage) -> UIImage? {
         if let imageData = UIImagePNGRepresentation(image) {
             let inputImage = CIImage(data:imageData)
@@ -70,5 +70,5 @@ class ListViewController: UITableViewController {
         }
         return nil
     }
-  
+    
 }
